@@ -3,14 +3,31 @@ package cl.dsoto.StudentService.models;
 import java.util.List;
 
 /**
- * Created by root on 17-11-21.
+ * Created by dsoto on 17-11-21.
+ */
+/**
+ * Clase que representa a la solicitud de una página
  */
 public class MyPageResponse {
 
+    /**
+     * Los registros de esta página
+     */
     private List<Student> items;
+
+    /**
+     * Cantidad total de registros
+     */
     private long totalResults;
+
+    /**
+     * Cantidad de registros en esta página
+     */
     private int limit;
 
+    /**
+     * Constructor vacío para la deserialización del objeto
+     */
     public MyPageResponse() {
     }
 

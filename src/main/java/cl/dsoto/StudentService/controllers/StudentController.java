@@ -19,48 +19,26 @@ import java.util.logging.Logger;
 
 
 /**
- * Created by des01c7 on 12-12-19.
+ * Created by dsoto on 12-12-19.
+ */
+
+/**
+ * Endpoint para API students
  */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("students")
 public class StudentController {
 
-    static private final Logger logger = Logger.getLogger(StudentController.class.getName());
-
     @Autowired
     private StudentRepository studentRepository;
 
-    @GetMapping("/")
-    public List<Student> getStudentsPaginated() {
-
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").descending());
-
-        return studentRepository.findAll(pageable).getContent();
-    }
-
-    @GetMapping("{page}/{size}/{sort}/{desc}")
-    public MyPageResponse getStudentsPaginated(@PathVariable int page,
-                                               @PathVariable int size,
-                                               @PathVariable String sort,
-                                               @PathVariable String desc) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-
-        switch (desc) {
-            case "desc":
-                pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-                break;
-            case "asc":
-                pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
-                break;
-        }
-
-        Page<Student> results = studentRepository.findAll(pageable);
-
-        return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
-    }
-
+    /**
+     * WebMethod responsable de entregar los resultados de acuerdo a los requerimientos especificados en la solicitud de
+     * página
+     * @param myPageRequest
+     * @return MyPageResponse
+     */
     @PostMapping
     public MyPageResponse getStudentsPaginated(@RequestBody MyPageRequest myPageRequest) {
 

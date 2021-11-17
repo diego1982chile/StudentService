@@ -4,24 +4,45 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
- * Created by root on 17-11-21.
+ * Created by dsoto on 17-11-21.
+ */
+/**
+ * Clase que representa a un alumno
  */
 @Entity
 @Table(name = "student")
 public class Student {
 
+    /**
+     * Identificador o llave primaria de la entidad persistente
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Rut del alumno
+     */
     private String rut;
 
+    /**
+     * Nombre del alumno
+     */
     private String name;
 
+    /**
+     * Fecha de nacimiento del alumno
+     */
     private LocalDate birth;
 
+    /**
+     * Género el alumno (M o F)
+     */
     private String gender;
 
+    /**
+     * Constructor vacío para la deserialización del objeto
+     */
     public Student() {
     }
 

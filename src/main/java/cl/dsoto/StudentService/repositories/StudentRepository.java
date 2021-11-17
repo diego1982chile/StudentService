@@ -8,10 +8,20 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
- * Created by root on 17-11-21.
+ * Created by dsoto on 17-11-21.
+ */
+
+/**
+ * Repositorio para entidad Student
  */
 public interface StudentRepository extends PagingAndSortingRepository<Student, Integer> {
 
+    /**
+     * Método personalizado para realizar una búsqueda utilizando un filtro
+     * @param filter
+     * @param pageable
+     * @return
+     */
     @Query("SELECT u FROM Student u WHERE lower(u.rut) like concat('%',lower(:filter),'%') " +
             "or lower(u.name) like concat('%',lower(:filter),'%') or lower(u.birth) like concat('%',lower(:filter),'%') " +
             "or lower(u.gender) like concat('%',lower(:filter),'%')")
