@@ -1,7 +1,8 @@
 package cl.dsoto.StudentService.controllers;
 
 
-import cl.dsoto.StudentService.models.CustomPage;
+import cl.dsoto.StudentService.models.MyPageRequest;
+import cl.dsoto.StudentService.models.MyPageResponse;
 import cl.dsoto.StudentService.models.Student;
 import cl.dsoto.StudentService.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,6 +22,7 @@ import java.util.logging.Logger;
  * Created by des01c7 on 12-12-19.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("students")
 public class StudentController {
 
@@ -41,10 +40,10 @@ public class StudentController {
     }
 
     @GetMapping("{page}/{size}/{sort}/{desc}")
-    public CustomPage getStudentsPaginated(@PathVariable int page,
-                                              @PathVariable int size,
-                                              @PathVariable String sort,
-                                              @PathVariable String desc) {
+    public MyPageResponse getStudentsPaginated(@PathVariable int page,
+                                               @PathVariable int size,
+                                               @PathVariable String sort,
+                                               @PathVariable String desc) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -57,9 +56,32 @@ public class StudentController {
                 break;
         }
 
-        Page<Student> pag = studentRepository.findAll(pageable);
+        Page<Student> results = studentRepository.findAll(pageable);
 
-        return new CustomPage(pag.getContent(), pag.getTotalElements(), pag.getNumberOfElements(), true, pag.getSize(), pag.getNumber());
+        return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
+    }
+
+    @PostMapping
+    public MyPageResponse getStudentsPaginated(@RequestBody MyPageRequest myPageRequest) {
+
+        Pageable pageable = PageRequest.of(myPageRequest.getPage(), myPageRequest.getFetchSize(), Sort.by("id").ascending());
+
+        if(myPageRequest.getSort() != null) {
+            if(myPageRequest.getSortDir().equalsIgnoreCase("asc")) {
+                pageable = PageRequest.of(myPageRequest.getPage(), myPageRequest.getFetchSize(), Sort.by(myPageRequest.getSort()).ascending());
+            }
+            else {
+                pageable = PageRequest.of(myPageRequest.getPage(), myPageRequest.getFetchSize(), Sort.by(myPageRequest.getSort()).descending());
+            }
+        }
+
+        Page<Student> results = studentRepository.findAll(pageable);
+
+        if(myPageRequest.getFilter() != null) {
+            results = studentRepository.findAll(myPageRequest.getFilter(), pageable);
+        }
+
+        return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
     }
 
 }
