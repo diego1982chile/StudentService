@@ -4,7 +4,7 @@ API Rest Students Paginados
 # Setup
 Se trata de un proyecto Spring Boot, por lo que se necesita
 
-- Java 8+
+- Java JDK 8+
 - Maven 3+
 - Descargar el proyecto desde el repositorio y descomprimir
 - Sincronizar las dependencias del proyecto. Dirigirse a la raiz del proyecto y ejecutar el siguiente comando:
