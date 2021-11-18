@@ -13,18 +13,23 @@ Se trata de un proyecto Spring Boot, por lo que se necesita
 ```
 # Run
 
-Ejecutar el siguiente comando para servir la aplicación utilizando node.js
+Ejecutar el siguiente comando para servir la aplicación utilizando tomcat embebido en la aplicación
 ```
-    mvn spring-boot run
+    ./mvnw spring-boot run
 ```
 # Build
 
-Opcionalmente el proyecto se puede empaquetar en un war (generado en la carpeta /dist) mediante el siguiente comando
+Para empaquetado war del proyect
 ```
-    mvn clean build
+    mvn clean package
 ```
-
 # Nota
 
-La URL de la api esta definida utilizando localhost, si se desea cambiar, modificar la variable contextPath en el
-archivo src/js/appController.js
+Si se va a servir la aplicación utilizando el tomcat embebido, comentar el scope en la dependencia, para que se incluya
+el servidor dentro de la aplicación
+
+     <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+          <!--scope>provided</scope-->
+     </dependency>
