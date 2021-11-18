@@ -9,19 +9,19 @@ Se trata de un proyecto Spring Boot, por lo que se necesita
 - Descargar el proyecto desde el repositorio y descomprimir
 - Sincronizar las dependencias del proyecto. Dirigirse a la raiz del proyecto y ejecutar el siguiente comando:
 ```
-     ojet restore
+     mvn clean install
 ```
 # Run
 
 Ejecutar el siguiente comando para servir la aplicación utilizando node.js
 ```
-    ojet serve
+    mvn spring-boot run
 ```
 # Build
 
 Opcionalmente el proyecto se puede empaquetar en un war (generado en la carpeta /dist) mediante el siguiente comando
 ```
-    ojet build --release
+    mvn clean build
 ```
 
 # Nota
