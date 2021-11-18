@@ -44,6 +44,7 @@ public class StudentController {
 
         Pageable pageable = PageRequest.of(myPageRequest.getPage(), myPageRequest.getFetchSize(), Sort.by("id").ascending());
 
+        // Si viene especificado el ordenamiento, setear esta información en la búsqueda
         if(myPageRequest.getSort() != null) {
             if(myPageRequest.getSortDir().equalsIgnoreCase("asc")) {
                 pageable = PageRequest.of(myPageRequest.getPage(), myPageRequest.getFetchSize(), Sort.by(myPageRequest.getSort()).ascending());
@@ -55,6 +56,7 @@ public class StudentController {
 
         Page<Student> results = studentRepository.findAll(pageable);
 
+        // Si viene especificado el filtro, utilizar el método personalizado del repositorio
         if(myPageRequest.getFilter() != null) {
             results = studentRepository.findAll(myPageRequest.getFilter(), pageable);
         }

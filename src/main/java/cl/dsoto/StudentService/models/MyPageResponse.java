@@ -6,12 +6,12 @@ import java.util.List;
  * Created by dsoto on 17-11-21.
  */
 /**
- * Clase que representa a la solicitud de una página
+ * Clase que representa a la respuesta de una página
  */
 public class MyPageResponse {
 
     /**
-     * Los registros de esta página
+     * Los registros de la página
      */
     private List<Student> items;
 
@@ -21,7 +21,7 @@ public class MyPageResponse {
     private long totalResults;
 
     /**
-     * Cantidad de registros en esta página
+     * Cantidad de registros de la página
      */
     private int limit;
 

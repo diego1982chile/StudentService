@@ -36,7 +36,7 @@ public class Student {
     private LocalDate birth;
 
     /**
-     * Género el alumno (M o F)
+     * Género del alumno (M o F)
      */
     private String gender;
 

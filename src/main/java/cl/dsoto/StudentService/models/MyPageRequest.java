@@ -26,7 +26,7 @@ public class MyPageRequest {
     private String sort;
 
     /**
-     * Campo atributo del alumno de ordenamiento
+     * Dirección de ordenamiento ascendente o descendente
      */
     private String sortDir;
 
