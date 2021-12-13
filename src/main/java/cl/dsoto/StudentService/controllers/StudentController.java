@@ -1,10 +1,12 @@
 package cl.dsoto.StudentService.controllers;
 
 
+import cl.dsoto.StudentService.models.CustomPageResponse;
 import cl.dsoto.StudentService.models.MyPageRequest;
 import cl.dsoto.StudentService.models.MyPageResponse;
 import cl.dsoto.StudentService.models.Student;
 import cl.dsoto.StudentService.repositories.StudentRepository;
+import cl.dsoto.StudentService.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -31,7 +34,28 @@ import java.util.logging.Logger;
 public class StudentController {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentService studentService;
+
+
+    @GetMapping("/")
+    public List<Student> getStudentsPaginated() {
+
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").descending());
+
+        return studentService.getStudentsPaginated(pageable).getContent();
+    }
+
+
+    @GetMapping
+    public CustomPageResponse getStudentsPaginated(@RequestParam int page,
+                                               @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+        Page<Student> results = studentService.getStudentsPaginated(pageable);
+
+        return new CustomPageResponse(results.getContent(), results.getTotalElements(), results.getTotalPages(), page);
+    }
 
     /**
      * WebMethod responsable de entregar los resultados de acuerdo a los requerimientos especificados en la solicitud de
@@ -54,12 +78,7 @@ public class StudentController {
             }
         }
 
-        Page<Student> results = studentRepository.findAll(pageable);
-
-        // Si viene especificado el filtro, utilizar el método personalizado del repositorio
-        if(myPageRequest.getFilter() != null) {
-            results = studentRepository.findAll(myPageRequest.getFilter(), pageable);
-        }
+        Page<Student> results = studentService.getStudentsPaginated(pageable, myPageRequest.getFilter());
 
         return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
     }

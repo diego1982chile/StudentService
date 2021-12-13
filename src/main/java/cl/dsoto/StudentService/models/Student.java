@@ -35,6 +35,31 @@ public class Student {
      */
     private LocalDate birth;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        if (!id.equals(student.id)) return false;
+        if (!rut.equals(student.rut)) return false;
+        if (!name.equals(student.name)) return false;
+        if (!birth.equals(student.birth)) return false;
+        return gender.equals(student.gender);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + rut.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + birth.hashCode();
+        result = 31 * result + gender.hashCode();
+        return result;
+    }
+
     /**
      * Género del alumno (M o F)
      */
