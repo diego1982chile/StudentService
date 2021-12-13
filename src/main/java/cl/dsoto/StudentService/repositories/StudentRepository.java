@@ -25,5 +25,5 @@ public interface StudentRepository extends PagingAndSortingRepository<Student, I
     @Query("SELECT u FROM Student u WHERE lower(u.rut) like concat('%',lower(:filter),'%') " +
             "or lower(u.name) like concat('%',lower(:filter),'%') or lower(u.birth) like concat('%',lower(:filter),'%') " +
             "or lower(u.gender) like concat('%',lower(:filter),'%')")
-    Page<Student> findAll(@Param("filter") String filter, Pageable pageable);
+    Page<Student> findAll(Pageable pageable, @Param("filter") String filter);
 }

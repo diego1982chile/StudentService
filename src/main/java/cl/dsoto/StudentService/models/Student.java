@@ -23,6 +23,7 @@ public class Student {
     /**
      * Rut del alumno
      */
+    @Column(unique = true)
     private String rut;
 
     /**
@@ -34,31 +35,6 @@ public class Student {
      * Fecha de nacimiento del alumno
      */
     private LocalDate birth;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Student student = (Student) o;
-
-        if (!id.equals(student.id)) return false;
-        if (!rut.equals(student.rut)) return false;
-        if (!name.equals(student.name)) return false;
-        if (!birth.equals(student.birth)) return false;
-        return gender.equals(student.gender);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + rut.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + birth.hashCode();
-        result = 31 * result + gender.hashCode();
-        return result;
-    }
 
     /**
      * Género del alumno (M o F)
@@ -117,4 +93,43 @@ public class Student {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        //if (this == o) return true;
+        //if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        // Si ambos objetos están persistidos comparar sus ids
+        if(id != null && student.id != null) {
+            return id.equals(student.id);
+        }
+        else {
+            // Si alguno de los objetos no está persistido, comparar el resto de sus campos
+            if (!rut.equals(student.rut)) return false;
+            if (!name.equals(student.name)) return false;
+            if (!birth.equals(student.birth)) return false;
+            return gender.equals(student.gender);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+
+        // Si el objeto está persistido, utilizar el id
+        /*
+        if(id != null) {
+            result = id.hashCode();
+        }
+        */
+
+        result = 31 * result + rut.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + birth.hashCode();
+        result = 31 * result + gender.hashCode();
+        return result;
+    }
+
 }
