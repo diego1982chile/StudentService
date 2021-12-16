@@ -77,7 +77,14 @@ public class StudentController {
             }
         }
 
-        Page<Student> results = studentService.getStudentsPaginated(pageable, myPageRequest.getFilter());
+        Page<Student> results;
+
+        if(myPageRequest.getFilter() == null) {
+            results = studentService.getStudentsPaginated(pageable);
+        }
+        else {
+            results = studentService.getStudentsPaginated(pageable, myPageRequest.getFilter());
+        }
 
         return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
     }

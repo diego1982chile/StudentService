@@ -1,5 +1,8 @@
 package cl.dsoto.StudentService.models;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -8,6 +11,8 @@ import java.util.List;
 /**
  * Clase que representa a la respuesta de una página
  */
+@Getter
+@Builder
 public class MyPageResponse {
 
     /**
