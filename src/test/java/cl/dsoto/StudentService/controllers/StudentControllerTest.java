@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @WebMvcTest
 class StudentControllerTest {
 
@@ -62,20 +62,18 @@ class StudentControllerTest {
                 new Student("1-5","Sofia Guzmán", LocalDate.of(2014,2,2),"F")
         );
 
-        pageable = PageRequest.of(0, 1);
+        pageable = PageRequest.of(0, 1, Sort.by("id").ascending());
+
         students1 = Mockito.mock(Page.class);
-        when(studentService.getStudentsPaginated(pageable)).thenReturn(students1);
+        //when(studentService.getStudentsPaginated(pageable)).thenReturn(students1);
     }
 
     @Test
     void canGetStudentsPaginated() throws Exception {
         // given
-        given(studentService.getStudentsPaginated(pageable)).willReturn(students1);
-
         Page<Student> page = new PageImpl<Student>(Arrays.asList(
                 new Student("1-1","Juan Pérez", LocalDate.of(2000,1,1),"M"),
                 new Student("1-2","Carla González", LocalDate.of(2010,2,2),"F")),pageable,5);
-
 
         MyPageResponse myPageResponse = MyPageResponse.builder()
                 .items(Arrays.asList(
@@ -87,6 +85,8 @@ class StudentControllerTest {
 
         when(studentService.getStudentsPaginated(pageable)).thenReturn(page);
 
+        //given(studentService.getStudentsPaginated(pageable)).willReturn(page);
+
         MyPageRequest myPageRequest = MyPageRequest.builder()
                 .page(0)
                 .fetchSize(1)
@@ -97,7 +97,7 @@ class StudentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(myPageRequest)))
                         .andExpect(status().isOk())
-                        .andExpect(content().json(asJsonString(students1)));
+                        .andExpect(content().json(asJsonString(page)));
 
         // then
     }
