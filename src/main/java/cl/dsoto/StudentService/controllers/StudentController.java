@@ -1,11 +1,11 @@
 package cl.dsoto.StudentService.controllers;
 
 
-import cl.dsoto.StudentService.models.CustomPageResponse;
-import cl.dsoto.StudentService.models.MyPageRequest;
-import cl.dsoto.StudentService.models.MyPageResponse;
+import cl.dsoto.StudentService.dto.extras.CustomPageResponse;
+import cl.dsoto.StudentService.dto.MyPageRequest;
+import cl.dsoto.StudentService.dto.MyPageResponse;
+import cl.dsoto.StudentService.dto.extras.StudentAugmented;
 import cl.dsoto.StudentService.models.Student;
-import cl.dsoto.StudentService.repositories.StudentRepository;
 import cl.dsoto.StudentService.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutionException;
 
 ;
 
@@ -44,10 +44,38 @@ public class StudentController {
         return studentService.getStudentsPaginated(pageable).getContent();
     }
 
+    @GetMapping("augmented/{page}/{size}")
+    public List<StudentAugmented> getStudentsAugmentedPaginated(@PathVariable int page, @PathVariable int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        List<StudentAugmented> studentAugmentedList = new ArrayList<>();
+
+        studentAugmentedList = studentService.getStudentsAugmentedPaginated(pageable).getContent();
+        return studentAugmentedList;
+    }
+
+    @GetMapping("augmented/parallel/{page}/{size}")
+    public List<StudentAugmented> getStudentsAugmentedPaginatedPar(@PathVariable int page, @PathVariable int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        List<StudentAugmented> studentAugmentedList = new ArrayList<>();
+
+        try {
+            studentAugmentedList = studentService.getStudentsAugmentedPaginatedPar(pageable).getContent();
+            return studentAugmentedList;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return studentAugmentedList;
+
+    }
 
     @GetMapping
     public CustomPageResponse getStudentsPaginated(@RequestParam int page,
-                                               @RequestParam int size) {
+                                                   @RequestParam int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
 

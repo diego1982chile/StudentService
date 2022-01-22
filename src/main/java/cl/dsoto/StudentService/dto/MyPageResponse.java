@@ -1,5 +1,6 @@
-package cl.dsoto.StudentService.models;
+package cl.dsoto.StudentService.dto;
 
+import cl.dsoto.StudentService.models.Student;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,4 +1,6 @@
-package cl.dsoto.StudentService.models;
+package cl.dsoto.StudentService.dto.extras;
+
+import cl.dsoto.StudentService.models.Student;
 
 import java.util.List;
 

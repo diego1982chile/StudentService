@@ -1,4 +1,4 @@
-package cl.dsoto.StudentService.models;
+package cl.dsoto.StudentService.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +44,11 @@ public class MyPageRequest {
      * Constructor vacío para la deserialización del objeto
      */
     public MyPageRequest() {
+    }
+
+    public MyPageRequest(int page, int fetchSize) {
+        this.page = page;
+        this.fetchSize = fetchSize;
     }
 
     public MyPageRequest(int page, int fetchSize, String sort, String sortDir, String filter) {
