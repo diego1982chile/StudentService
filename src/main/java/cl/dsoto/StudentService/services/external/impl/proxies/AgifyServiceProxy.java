@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-@FeignClient(name = "agify-service", url = "${CURRENCY_EXCHANGE_URI:https://api.agify.io}")
+@FeignClient(name = "agify-service", url = "${https://api.agify.io}")
 public interface AgifyServiceProxy {
 
     @GetMapping

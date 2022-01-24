@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
     NationalizeService nationalizeService;
 
     /**
-     * Componentes asíncronos
+     * Asynchronous components
      */
     @Autowired
     AgifyServiceAsync agifyServiceAsync;
@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
     NationalizeServiceAsync nationalizeServiceAsync;
 
     /**
-     * Componentes proxy
+     * Proxy components
      */
     @Autowired
     AgifyServiceProxy agifyServiceProxy;
