@@ -13,6 +13,9 @@ import cl.dsoto.StudentService.services.external.NationalizeService;
 import cl.dsoto.StudentService.services.external.async.AgifyServiceAsync;
 import cl.dsoto.StudentService.services.external.async.GenderizeServiceAsync;
 import cl.dsoto.StudentService.services.external.async.NationalizeServiceAsync;
+import cl.dsoto.StudentService.services.external.impl.proxies.AgifyServiceProxy;
+import cl.dsoto.StudentService.services.external.impl.proxies.GenderizeServiceProxy;
+import cl.dsoto.StudentService.services.external.impl.proxies.NationalizeServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.SpringVersion;
 import org.springframework.data.domain.Page;
@@ -42,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     NationalizeService nationalizeService;
 
+    /**
+     * Componentes asíncronos
+     */
     @Autowired
     AgifyServiceAsync agifyServiceAsync;
 
@@ -50,6 +56,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     NationalizeServiceAsync nationalizeServiceAsync;
+
+    /**
+     * Componentes proxy
+     */
+    @Autowired
+    AgifyServiceProxy agifyServiceProxy;
+
+    @Autowired
+    GenderizeServiceProxy genderizeServiceProxy;
+
+    @Autowired
+    NationalizeServiceProxy nationalizeServiceProxy;
 
 
     public StudentServiceImpl(StudentRepository studentRepository) {
@@ -76,9 +94,10 @@ public class StudentServiceImpl implements StudentService {
 
             String name = student.getName().split(" ")[0];
 
-            AgePrediction agePred = agifyService.getAgePrediction(name);
-            GenderPrediction genderPred = genderizeService.getGenderPrediction(name);
-            NationPrediction nationPred = nationalizeService.getNationPrediction(name);
+            //AgePrediction agePred = agifyService.getAgePrediction(name);
+            AgePrediction agePred = agifyServiceProxy.getAgePrediction(name);
+            GenderPrediction genderPred = genderizeServiceProxy.getGenderPrediction(name);
+            NationPrediction nationPred = nationalizeServiceProxy.getNationPrediction(name);
 
             studentAugmentedList.add(new StudentAugmented(student, agePred, genderPred, nationPred));
         }
@@ -89,7 +108,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<StudentAugmented> getStudentsAugmentedPaginatedPar(Pageable pageable) throws ExecutionException, InterruptedException {
+    public Page<StudentAugmented> getStudentsAugmentedPaginatedPar(Pageable pageable)
+            throws ExecutionException, InterruptedException {
 
         List<StudentAugmented> studentAugmentedList = new ArrayList<>();
 

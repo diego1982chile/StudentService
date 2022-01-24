@@ -4,6 +4,7 @@ import cl.dsoto.StudentService.dto.MyPageRequest;
 import cl.dsoto.StudentService.dto.MyPageResponse;
 import cl.dsoto.StudentService.models.Student;
 import cl.dsoto.StudentService.services.StudentService;
+import cl.dsoto.StudentService.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class StudentControllerTest {
 
     @MockBean
     private StudentService studentService;
+
+    @MockBean
+    private UserService userService;
 
     private MyPageResponse myPageResponse;
 

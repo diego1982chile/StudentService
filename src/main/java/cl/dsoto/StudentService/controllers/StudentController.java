@@ -44,6 +44,16 @@ public class StudentController {
         return studentService.getStudentsPaginated(pageable).getContent();
     }
 
+    @GetMapping("/{page}/{size}")
+    public List<Student> getStudentsPaginated(@PathVariable int page, @PathVariable int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        List<Student> studentAugmentedList = new ArrayList<>();
+
+        studentAugmentedList = studentService.getStudentsPaginated(pageable).getContent();
+        return studentAugmentedList;
+    }
+
     @GetMapping("augmented/{page}/{size}")
     public List<StudentAugmented> getStudentsAugmentedPaginated(@PathVariable int page, @PathVariable int size) {
 
@@ -53,6 +63,7 @@ public class StudentController {
         studentAugmentedList = studentService.getStudentsAugmentedPaginated(pageable).getContent();
         return studentAugmentedList;
     }
+
 
     @GetMapping("augmented/parallel/{page}/{size}")
     public List<StudentAugmented> getStudentsAugmentedPaginatedPar(@PathVariable int page, @PathVariable int size) {
@@ -73,6 +84,7 @@ public class StudentController {
 
     }
 
+    /*
     @GetMapping
     public CustomPageResponse getStudentsPaginated(@RequestParam int page,
                                                    @RequestParam int size) {
@@ -83,6 +95,7 @@ public class StudentController {
 
         return new CustomPageResponse(results.getContent(), results.getTotalElements(), results.getTotalPages(), page);
     }
+    */
 
     /**
      * WebMethod responsable de entregar los resultados de acuerdo a los requerimientos especificados en la solicitud de

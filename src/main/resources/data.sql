@@ -1,5 +1,4 @@
 
-
 insert into student(rut,name,birth,gender) values ('21469987-7', 'Judith Arnaiz', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'F');
 insert into student(rut,name,birth,gender) values ('12172751-k', 'Youssef Ramon', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'M');
 insert into student(rut,name,birth,gender) values ('14613497-1', 'Anas Boix', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'M');

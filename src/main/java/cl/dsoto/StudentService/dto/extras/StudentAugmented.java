@@ -21,7 +21,7 @@ public class StudentAugmented extends Student {
     }
 
     public StudentAugmented(Student stud, AgePrediction agePred, GenderPrediction genderPred, NationPrediction nationPred) {
-        super(stud.getRut(), stud.getName(), stud.getBirth(), stud.getGender());
+        super(stud.getId(), stud.getRut(), stud.getName(), stud.getBirth(), stud.getGender());
         this.additionalInfo = new AdditionalInfo(agePred, genderPred, nationPred);
     }
 

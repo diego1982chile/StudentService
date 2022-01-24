@@ -54,6 +54,14 @@ public class Student {
         this.gender = gender;
     }
 
+    public Student(Long id, String rut, String name, LocalDate birth, String gender) {
+        this.id = id;
+        this.rut = rut;
+        this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+    }
+
     public Long getId() {
         return id;
     }
