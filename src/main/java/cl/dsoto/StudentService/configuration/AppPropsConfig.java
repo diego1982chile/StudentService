@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:private.properties")
-public class ApplicationProperties {
+public class AppPropsConfig {
 
     @Value("${key}")
     private String key;

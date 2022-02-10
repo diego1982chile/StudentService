@@ -1,6 +1,6 @@
 package cl.dsoto.StudentService.services.external.impl;
 
-import cl.dsoto.StudentService.configuration.ApplicationProperties;
+import cl.dsoto.StudentService.configuration.AppPropsConfig;
 import cl.dsoto.StudentService.dto.extras.NationPrediction;
 import cl.dsoto.StudentService.services.external.NationalizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ public class NationalizeServiceImpl implements NationalizeService {
     final String URL = "https://api.nationalize.io/?name=[name]&apikey=[apikey]";
 
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private AppPropsConfig appPropsConfig;
 
     public NationPrediction getNationPrediction(String name) {
-        String url = URL.replace("[name]",name).replace("[apikey]", applicationProperties.getKey());
+        String url = URL.replace("[name]",name).replace("[apikey]", appPropsConfig.getKey());
         NationPrediction response = restClient.getForObject(url, NationPrediction.class);
         return response;
     }

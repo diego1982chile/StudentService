@@ -16,6 +16,8 @@ import cl.dsoto.StudentService.services.external.async.NationalizeServiceAsync;
 import cl.dsoto.StudentService.services.external.impl.proxies.AgifyServiceProxy;
 import cl.dsoto.StudentService.services.external.impl.proxies.GenderizeServiceProxy;
 import cl.dsoto.StudentService.services.external.impl.proxies.NationalizeServiceProxy;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.SpringVersion;
 import org.springframework.data.domain.Page;
@@ -57,6 +59,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     NationalizeServiceAsync nationalizeServiceAsync;
 
+    @Autowired
+    MeterRegistry meterRegistry;
+
     /**
      * Proxy components
      */
@@ -75,6 +80,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Timed("students_paginated_latency")
     public Page<Student> getStudentsPaginated(Pageable pageable) {
         return studentRepository.findAll(pageable);
     }

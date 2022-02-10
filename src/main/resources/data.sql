@@ -99,3 +99,5 @@ insert into student(rut,name,birth,gender) values ('18459338-6', 'Dani Cebrian',
 insert into student(rut,name,birth,gender) values ('22747180-8', 'Luciana Mariscal', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'F');
 insert into student(rut,name,birth,gender) values ('15288221-1', 'Cynthia Calle', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'F');
 insert into student(rut,name,birth,gender) values ('11149824-5', 'Esperanza Sierra', DATEADD('DAY',-ROUND(10000*RAND(),1), CURRENT_DATE), 'F');
+
+insert into user(username, password) values ('testuser', '123');

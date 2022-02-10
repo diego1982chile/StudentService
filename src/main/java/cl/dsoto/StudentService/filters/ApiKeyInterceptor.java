@@ -1,13 +1,10 @@
 package cl.dsoto.StudentService.filters;
 
-import cl.dsoto.StudentService.configuration.ApplicationProperties;
+import cl.dsoto.StudentService.configuration.AppPropsConfig;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import feign.template.QueryTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 /**
  * Created by root on 24-01-22.
@@ -16,11 +13,11 @@ import java.util.Arrays;
 public class ApiKeyInterceptor implements RequestInterceptor {
 
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private AppPropsConfig appPropsConfig;
 
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        requestTemplate.query("apikey", applicationProperties.getKey());
+        requestTemplate.query("apikey", appPropsConfig.getKey());
     }
 }

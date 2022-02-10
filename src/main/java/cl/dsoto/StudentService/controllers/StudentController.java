@@ -7,6 +7,8 @@ import cl.dsoto.StudentService.dto.MyPageResponse;
 import cl.dsoto.StudentService.dto.extras.StudentAugmented;
 import cl.dsoto.StudentService.models.Student;
 import cl.dsoto.StudentService.services.StudentService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -129,5 +131,13 @@ public class StudentController {
 
         return new MyPageResponse(results.getContent(), results.getTotalElements(), results.getNumberOfElements());
     }
+
+    private void increaseCount(String partnerId, String state) {
+        // Counter class stores the measurement name and the tags and
+        // their values
+        Counter counter = Metrics.counter("request.orders", "partnerId", partnerId, "state", state);
+        counter.increment();
+    }
+
 
 }

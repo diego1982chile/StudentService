@@ -1,0 +1,51 @@
+#contextpath para la api
+server:
+  servlet:
+    context-path: /api
+
+#spring.datasource.url=jdbc:h2:mem:students
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:students;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto:
+        none
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  pid:
+    file: /home/pid.txt
+
+management:
+  metrics:
+    export:
+      influx:
+        enabled: false
+
+#spring.profiles.include=@spring.profiles.active@
+---
+spring:
+    config:
+        activate:
+            on-profile: metrics
+management:
+  metrics:
+    export:
+      influx:
+        enabled: true
+        api-version: v2
+        bucket: my-bucket
+        org: my-org
+        #step: 10s
+        step: PT10S
+        #token: nuv0VbXRjOCkzllgxlhbkSlCUDjN_5yO36RbzgJjvy7qUaybnffiCJITAGOzb4yzHgq0ATe411JhsP1anz4qbg==
+        token: admin-token
+        #uri: http://3.145.115.108:8086
+        uri: http://localhost:8086
+---

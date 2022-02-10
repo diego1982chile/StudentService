@@ -1,19 +1,16 @@
 package cl.dsoto.StudentService.services.external.impl.proxies;
 
-import cl.dsoto.StudentService.configuration.ApplicationProperties;
 import cl.dsoto.StudentService.dto.extras.AgePrediction;
-import cl.dsoto.StudentService.services.external.AgifyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
-@FeignClient(name = "agify-service", url = "${https://api.agify.io}")
+@FeignClient(name = "agify-service", url = "${AGIFY_URI:https://api.agify.io}")
 public interface AgifyServiceProxy {
 
     @GetMapping
+    @Timed("agify_time")
     public AgePrediction getAgePrediction(@RequestParam("name") String name);
 
 }

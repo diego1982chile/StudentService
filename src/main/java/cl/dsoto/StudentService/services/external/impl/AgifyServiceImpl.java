@@ -1,6 +1,6 @@
 package cl.dsoto.StudentService.services.external.impl;
 
-import cl.dsoto.StudentService.configuration.ApplicationProperties;
+import cl.dsoto.StudentService.configuration.AppPropsConfig;
 import cl.dsoto.StudentService.dto.extras.AgePrediction;
 import cl.dsoto.StudentService.services.external.AgifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ public class AgifyServiceImpl implements AgifyService {
     final String URL = "https://api.agify.io/?name=[name]&apikey=[apikey]";
 
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private AppPropsConfig appPropsConfig;
 
     public AgePrediction getAgePrediction(String name) {
-        String url = URL.replace("[name]",name).replace("[apikey]", applicationProperties.getKey());
+        String url = URL.replace("[name]",name).replace("[apikey]", appPropsConfig.getKey());
         AgePrediction response = restClient.getForObject(url, AgePrediction.class);
         return response;
     }
