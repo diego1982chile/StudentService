@@ -9,23 +9,19 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: admin
 
-  influxdb:
-    image: influxdb:2.0-alpine
-    container_name: influxdb
-    ports:
-      - 8086:8086
+
+  prometheus:
+    image: prom/prometheus:v2.1.0
     volumes:
-      - ./data/influxdb2/data:/var/lib/influxdb2
-      - ./data/influxdb2/config:/etc/influxdb2
-    environment:
-      INFLUXDB_HTTP_AUTH_ENABLED: "false"
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: user
-      DOCKER_INFLUXDB_INIT_PASSWORD: password
-      DOCKER_INFLUXDB_INIT_ORG: my-org
-      DOCKER_INFLUXDB_INIT_BUCKET: my-bucket
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: admin-token
-      INFLUXD_REPORTING_DISABLED: "true"
+      - ./prometheus/:/etc/prometheus/
+      - ./data/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
 
 networks:
   default:

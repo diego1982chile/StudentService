@@ -33,7 +33,7 @@ management:
 spring:
     config:
         activate:
-            on-profile: metrics
+            on-profile: metrics-influxdb
 management:
   metrics:
     export:
@@ -48,4 +48,23 @@ management:
         token: admin-token
         #uri: http://3.145.115.108:8086
         uri: http://localhost:8086
+---
+#spring:
+#    config:
+#        activate:
+#            on-profile: metrics-prometheus
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
 ---
