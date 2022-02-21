@@ -22,6 +22,7 @@ import java.time.Duration;
 @Profile(value = "metrics")
 public class MetricsConfig {
 
+
     @Bean
     public InfluxConfigAdapter influxConfig(MetricsExportProperties props) {
         return new InfluxConfigAdapter(props);
@@ -31,6 +32,7 @@ public class MetricsConfig {
     public InfluxMeterRegistry influxMeterRegistry(InfluxConfigAdapter influxConfig) {
         return new InfluxMeterRegistry(influxConfig, Clock.SYSTEM);
     }
+
 
     @Bean
     public TimedAspect timedAspect(MeterRegistry meterRegistry) {
