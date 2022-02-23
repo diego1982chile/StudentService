@@ -12,7 +12,7 @@ public interface NationalizeServiceProxy {
 
     @GetMapping
     @Timed("nationalize_time")
-    //@Cacheable(value = "nationalize", key = "name")
+    @Cacheable(value = "nationalize")
     public NationPrediction getNationPrediction(@RequestParam("name") String name);
 
 }

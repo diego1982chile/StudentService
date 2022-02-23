@@ -31,9 +31,9 @@ management:
 service:
   mock:
     url:
-      agify: http://localhost:9561/agify
-      genderize: http://localhost:9561/genderize
-      nationalize: http://localhost:9561/nationalize
+      #agify: http://localhost:9561/agify
+      #genderize: http://localhost:9561/genderize
+      #nationalize: http://localhost:9561/nationalize
 
 api:
   rate-limit:

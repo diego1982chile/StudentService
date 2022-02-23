@@ -7,13 +7,16 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 //@FeignClient(name = "agify-service", url = "${service.mock.url:https://api.agify.io}")
 @FeignClient(name = "agify-service", url = "${service.mock.url.agify:https://api.agify.io}")
 public interface AgifyServiceProxy {
 
     @GetMapping
     @Timed("agify_time")
-    //@Cacheable(value = "agify", key = "name")
+    @Cacheable(value = "agify")
     public AgePrediction getAgePrediction(@RequestParam("name") String name);
 
 }

@@ -12,7 +12,7 @@ public interface GenderizeServiceProxy {
 
     @GetMapping
     @Timed("genderize_time")
-    //@Cacheable(value = "genderize", key = "name")
+    @Cacheable(value = "genderize")
     public GenderPrediction getGenderPrediction(@RequestParam("name") String name);
 
 }

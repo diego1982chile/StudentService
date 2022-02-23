@@ -1,5 +1,6 @@
 package cl.dsoto.StudentService.dto.extras;
 
+
 public class AgePrediction {
 
     String name;
