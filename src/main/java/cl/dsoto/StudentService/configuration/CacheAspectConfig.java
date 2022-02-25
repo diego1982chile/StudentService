@@ -37,14 +37,13 @@ import java.util.concurrent.TimeUnit;
 
 @Aspect
 @Configuration
-//@Profile("cache")
+@Profile("cache")
 public class CacheAspectConfig {
 
         private static Logger log = LoggerFactory.getLogger(CacheAspectConfig.class);
         private final Object syncLock = new Object();
 
         private JedisPool jedisPool;
-
 
         @PostConstruct
         public void init() {
