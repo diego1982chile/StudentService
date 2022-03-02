@@ -1,6 +1,5 @@
 package cl.dsoto.StudentService.configuration;
 
-import cl.dsoto.StudentService.properties.RateLimitProperties;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
@@ -13,6 +12,7 @@ import java.time.Duration;
 /**
  * Created by root on 21-02-22.
  */
+/*
 @Configuration
 @EnableConfigurationProperties(RateLimitProperties.class)
 public class RateLimitConfig {
@@ -28,3 +28,4 @@ public class RateLimitConfig {
     }
 
 }
+*/

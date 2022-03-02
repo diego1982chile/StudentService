@@ -37,9 +37,16 @@ service:
 
 api:
   rate-limit:
-    my-requests-per-minute: 10
-    my-initial-tokens: 10
-
+    endpoints:
+      getAgePrediction:
+        requests-per-minute: 10
+        initial-tokens: 10
+      getGenderPrediction:
+        requests-per-minute: 10
+        initial-tokens: 10
+      getNationPrediction:
+        requests-per-minute: 10
+        initial-tokens: 10
 
 
 #spring.profiles.include=@spring.profiles.active@

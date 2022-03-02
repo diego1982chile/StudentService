@@ -1,5 +1,6 @@
 package cl.dsoto.StudentService.services.external.impl.proxies;
 
+import cl.dsoto.StudentService.configuration.annotations.Rateable;
 import cl.dsoto.StudentService.dto.extras.GenderPrediction;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +14,7 @@ public interface GenderizeServiceProxy {
     @GetMapping
     @Timed("genderize_time")
     @Cacheable(value = "genderize")
+    @Rateable(requestsPerMinute = 10, initialTokens = 10)
     public GenderPrediction getGenderPrediction(@RequestParam("name") String name);
 
 }

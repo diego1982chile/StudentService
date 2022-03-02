@@ -5,6 +5,7 @@ package cl.dsoto.StudentService.configuration;
  */
 
 import cl.dsoto.StudentService.configuration.annotations.Rateable;
+import cl.dsoto.StudentService.properties.RateLimitProps;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
@@ -18,9 +19,13 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -33,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Configuration
 //@Profile("rate-limit")
+@ConfigurationProperties("api.rate-limit")
 public class RateLimitAspectConfig {
 
 
@@ -40,7 +46,30 @@ public class RateLimitAspectConfig {
     //@Autowired
     //Bucket myRateBucket;
 
+    Map<String, RateLimitProps> endpoints = new HashMap<>();
+
     Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+
+    @PostConstruct
+    public void init() {
+        for (String endpointMethod : endpoints.keySet()) {
+            RateLimitProps rateLimitProps = endpoints.get(endpointMethod);
+            buckets.put(endpointMethod, Bucket4j.builder()
+                    .addLimit(
+                            Bandwidth.simple(rateLimitProps.getRequestsPerMinute(), Duration.ofMinutes(1))
+                                    .withInitialTokens(rateLimitProps.getInitialTokens()))
+                    .build());
+        }
+    }
+
+
+    public Map<String, RateLimitProps> getEndpoints() {
+        return endpoints;
+    }
+
+    public void setEndpoints(Map<String, RateLimitProps> endpoints) {
+        this.endpoints = endpoints;
+    }
 
     @Pointcut("execution(@cl.dsoto.StudentService.configuration.annotations.Rateable * *.*(..))")
     @SuppressWarnings("unused")
@@ -62,10 +91,10 @@ public class RateLimitAspectConfig {
         Object target = jp.getTarget();
         Method currentMethod = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
 
-        int requestsPerMinute = currentMethod.getAnnotation(Rateable.class).requestsPerMinute();
-        int initialTokens = currentMethod.getAnnotation(Rateable.class).initialTokens();
-
         if(!buckets.containsKey(currentMethod.getName())) {
+            int requestsPerMinute = msig.getMethod().getAnnotation(Rateable.class).requestsPerMinute();
+            int initialTokens = msig.getMethod().getAnnotation(Rateable.class).initialTokens();
+
             buckets.put(currentMethod.getName(), Bucket4j.builder()
                     .addLimit(
                             Bandwidth.simple(requestsPerMinute, Duration.ofMinutes(1))
@@ -73,19 +102,26 @@ public class RateLimitAspectConfig {
                     .build());
         }
 
-        ConsumptionProbe probe = buckets.get(currentMethod.getName()).tryConsumeAndReturnRemaining(1);
+        do {
+            ConsumptionProbe probe = buckets.get(currentMethod.getName()).tryConsumeAndReturnRemaining(1);
 
-        if(!probe.isConsumed()) {
-            long timeUntilRefill = TimeUnit.NANOSECONDS.toMillis(probe.getNanosToWaitForRefill());
-
-            try {
-                Thread.sleep(timeUntilRefill);
+            if(probe.isConsumed()) {
+                return;
             }
-            catch (InterruptedException e) {
-                System.out.println(e.getMessage());
+            else {
+                long timeUntilRefill = TimeUnit.NANOSECONDS.toMillis(probe.getNanosToWaitForRefill());
+
+                try {
+                    Thread.sleep(timeUntilRefill);
+                }
+                catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
+        while(true);
 
     }
+
 
 }

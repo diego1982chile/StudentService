@@ -1,5 +1,6 @@
 package cl.dsoto.StudentService.services.external.impl.proxies;
 
+import cl.dsoto.StudentService.configuration.annotations.Rateable;
 import cl.dsoto.StudentService.dto.extras.NationPrediction;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +14,7 @@ public interface NationalizeServiceProxy {
     @GetMapping
     @Timed("nationalize_time")
     @Cacheable(value = "nationalize")
+    @Rateable(requestsPerMinute = 10, initialTokens = 10)
     public NationPrediction getNationPrediction(@RequestParam("name") String name);
 
 }
