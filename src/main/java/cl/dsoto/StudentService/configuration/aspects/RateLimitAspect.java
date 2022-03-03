@@ -1,4 +1,4 @@
-package cl.dsoto.StudentService.configuration;
+package cl.dsoto.StudentService.configuration.aspects;
 
 /**
  * Created by root on 21-02-22.
@@ -10,6 +10,10 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.ConsumptionProbe;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -33,13 +37,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 @Aspect
 @Configuration
 //@Profile("rate-limit")
 @ConfigurationProperties("api.rate-limit")
-public class RateLimitAspectConfig {
+public class RateLimitAspect {
 
 
     //@Qualifier("myRateBucket")
@@ -50,6 +56,12 @@ public class RateLimitAspectConfig {
 
     Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
+    // maintain a reference to myGauge
+    Map<String, AtomicLong> gauges = new ConcurrentHashMap<>();
+
+    @Autowired
+    MeterRegistry meterRegistry;
+
     @PostConstruct
     public void init() {
         for (String endpointMethod : endpoints.keySet()) {
@@ -59,8 +71,12 @@ public class RateLimitAspectConfig {
                             Bandwidth.simple(rateLimitProps.getRequestsPerMinute(), Duration.ofMinutes(1))
                                     .withInitialTokens(rateLimitProps.getInitialTokens()))
                     .build());
+
+            gauges.put(endpointMethod, meterRegistry.gauge("remaining.tokens." + endpointMethod,
+                                        new AtomicLong(rateLimitProps.getInitialTokens())));
         }
     }
+
 
 
     public Map<String, RateLimitProps> getEndpoints() {
@@ -104,6 +120,8 @@ public class RateLimitAspectConfig {
 
         do {
             ConsumptionProbe probe = buckets.get(currentMethod.getName()).tryConsumeAndReturnRemaining(1);
+
+            gauges.get(currentMethod.getName()).set(probe.getRemainingTokens());
 
             if(probe.isConsumed()) {
                 return;

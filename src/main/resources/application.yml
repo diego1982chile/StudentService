@@ -39,53 +39,53 @@ api:
   rate-limit:
     endpoints:
       getAgePrediction:
-        requests-per-minute: 10
-        initial-tokens: 10
+        requests-per-minute: 100
+        initial-tokens: 100
       getGenderPrediction:
-        requests-per-minute: 10
-        initial-tokens: 10
+        requests-per-minute: 100
+        initial-tokens: 100
       getNationPrediction:
-        requests-per-minute: 10
-        initial-tokens: 10
+        requests-per-minute: 100
+        initial-tokens: 100
 
 
 #spring.profiles.include=@spring.profiles.active@
----
-#spring:
-#    config:
-#        activate:
-#            on-profile: metrics
-#management:
-#  metrics:
-#    export:
-#      influx:
-#        enabled: true
-#        api-version: v2
-#        bucket: my-bucket
-#        org: my-org
-#        #step: 10s
-#        step: PT10S
-#        #token: nuv0VbXRjOCkzllgxlhbkSlCUDjN_5yO36RbzgJjvy7qUaybnffiCJITAGOzb4yzHgq0ATe411JhsP1anz4qbg==
-#        token: admin-token
-#        #uri: http://3.145.115.108:8086
-#        uri: http://localhost:8086
 ---
 spring:
     config:
         activate:
             on-profile: metrics
 management:
-  endpoint:
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus
   metrics:
     export:
-      prometheus:
+      influx:
         enabled: true
+        api-version: v2
+        bucket: my-bucket
+        org: my-org
+        #step: 10s
+        step: PT10S
+        #token: nuv0VbXRjOCkzllgxlhbkSlCUDjN_5yO36RbzgJjvy7qUaybnffiCJITAGOzb4yzHgq0ATe411JhsP1anz4qbg==
+        token: admin-token
+        #uri: http://3.145.115.108:8086
+        uri: http://localhost:8086
+---
+#spring:
+#    config:
+#        activate:
+#            on-profile: metrics
+#management:
+#  endpoint:
+#    metrics:
+#      enabled: true
+#    prometheus:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,prometheus
+#  metrics:
+#    export:
+#      prometheus:
+#        enabled: true
 ---

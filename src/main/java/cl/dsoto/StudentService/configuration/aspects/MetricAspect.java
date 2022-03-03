@@ -1,4 +1,4 @@
-package cl.dsoto.StudentService.configuration;
+package cl.dsoto.StudentService.configuration.aspects;
 
 /**
  * Created by root on 09-02-22.
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Configuration
 @Profile("metrics")
-public class MetricAspectConfig {
+public class MetricAspect {
 
     @Autowired
     MeterRegistry meterRegistry;
