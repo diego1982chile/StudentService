@@ -17,11 +17,14 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot.version>2.6.2</spring-boot.version>
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
 		<jackson.version>2.12.2</jackson.version>
 		<bucket4j.version>6.3.0</bucket4j.version>
 		<univocity-parsers.version>2.9.1</univocity-parsers.version>
+		<vaadin.version>21.0.9</vaadin.version>
 	</properties>
 
 	<dependencies>
@@ -38,6 +41,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-spring-boot-starter</artifactId>
+			<version>${vaadin.version}</version>
 		</dependency>
 
 		<dependency>
