@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Created by dsoto on 17-11-21.
  */
@@ -26,4 +28,7 @@ public interface StudentRepository extends PagingAndSortingRepository<Student, I
             "or lower(u.name) like concat('%',lower(:filter),'%') or lower(u.birth) like concat('%',lower(:filter),'%') " +
             "or lower(u.gender) like concat('%',lower(:filter),'%')")
     Page<Student> findAll(Pageable pageable, @Param("filter") String filter);
+
+    @Override
+    List<Student> findAll();
 }

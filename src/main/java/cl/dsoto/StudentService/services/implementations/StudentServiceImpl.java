@@ -80,6 +80,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getAll() {
+        return studentRepository.findAll();
+    }
+
+    @Override
     @Timed("students_paginated_latency")
     public Page<Student> getStudentsPaginated(Pageable pageable) {
         return studentRepository.findAll(pageable);
